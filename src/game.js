@@ -18,12 +18,10 @@ var Game = (function () {
         for (var _i = 0, nextFrames_1 = nextFrames; _i < nextFrames_1.length; _i++) {
             var frame = nextFrames_1[_i];
             var numberOfRollLeft = maxRolls - rolls.length;
-            var newRolls = frame.rolls.slice(0, (numberOfRollLeft + 1));
-            console.log('-- left', numberOfRollLeft, newRolls);
+            var newRolls = frame.rolls.slice(0, numberOfRollLeft);
             rolls = rolls.concat(newRolls);
         }
         ;
-        console.log(rolls);
         return rolls.reduce(function (sum, roll) { return sum + roll; });
     };
     Game.prototype.calculateSpare = function (nextFrame) {
@@ -33,13 +31,10 @@ var Game = (function () {
     Game.prototype.calculateScore = function () {
         var _this = this;
         var sum = this.frames.reduce(function (sum, frame, index) {
-            var frameSum;
-            var type;
-            _a = frame.calculateScore(), type = _a[0], frameSum = _a[1];
+            var _a = frame.calculateScore(), type = _a[0], frameSum = _a[1];
             switch (type) {
                 case 1:
                     var strikeSum = _this.calculateStrike(_this.frames.slice((index + 1), index + 3));
-                    console.log(strikeSum);
                     return sum + strikeSum;
                 case 0:
                     return _this.calculateSpare(_this.frames[index + 1]);
@@ -48,7 +43,6 @@ var Game = (function () {
                 default:
                     return sum;
             }
-            var _a;
         }, 0);
         return sum;
     };

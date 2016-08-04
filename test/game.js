@@ -13,15 +13,32 @@ describe("Game", function () {
     });
   });
   describe('#nextFrame', function() {
+
     it('should return the next Frame', function() {
       expect(game.nextFrame() instanceof Frame).toBe(true);
     });
+
     it('should not return the same Frame as the last Frame', function() {
       var firstFrame = game.nextFrame();
       var nextFrame = game.nextFrame();
       expect(firstFrame).not.toBe(nextFrame);
     });
+
   });
+
+  describe('#isComplete', function() {
+    it('should be false if there it is not on the last frame', () => {
+      var firstFrame = game.nextFrame();
+      expect(game.isComplete()).toBe(false);
+    });
+
+    it('should be true if it is on the last frame and it has completed', () => {
+      game.currentFrameIndex = 9;
+      game.frames[9].isComplete = function() { return true; }
+      expect(game.isComplete()).toBe(true);
+    })
+  });
+
   describe('#calculateScore', function() {
     describe('when there are no strikes or spares', function() {
       it('the scores should be the sum of all the frames', function() {
@@ -102,6 +119,20 @@ describe("Game", function () {
       game.frames[1].addRoll(10);
 
       expect(game.calculateScore()).toBe(30);
+    });
+  });
+
+  describe('the perfect game', function() {
+    it('should have a sum of 300 with only strikes', () => {
+      while(!game.isComplete()) {
+          let frame = game.getCurrentFrame();
+          while(!frame.isComplete()) {
+            frame.addRoll(10);
+          }
+          game.nextFrame();
+      }
+
+      expect(game.calculateScore()).toBe(300);
     });
   });
 });
