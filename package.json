@@ -12,6 +12,7 @@
     "lib"
   ],
   "scripts": {
+    "build": "./node_modules/webpack/bin/webpack.js",
     "test": "gulp test"
   },
   "dependencies": {},
@@ -27,8 +28,10 @@
     "gulp-tsconfig-files": "0.0.2",
     "gulp-tslint": "^3.1",
     "jasmine": "^2.3.1",
+    "ts-loader": "^0.8.2",
     "tslint": "^3.5",
-    "typescript": "^1.8"
+    "typescript": "^1.8",
+    "webpack": "^1.13.1"
   },
   "engines": {
     "node": ">=2.0.0"

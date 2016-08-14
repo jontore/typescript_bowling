@@ -125,7 +125,7 @@ describe("Game", function () {
   describe('the perfect game', function() {
     it('should have a sum of 300 with only strikes', () => {
       while(!game.isComplete()) {
-          let frame = game.getCurrentFrame();
+          var frame = game.getCurrentFrame();
           while(!frame.isComplete()) {
             frame.addRoll(10);
           }

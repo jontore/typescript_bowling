@@ -1,5 +1,5 @@
 module.exports = {
-    entry: "./src/game.ts",
+    entry: "./src/gameCreator.ts",
     output: {
         filename: "bundle.js",
         library: 'bowling',
