@@ -47,7 +47,7 @@ class Game {
             let strikeSum = this.calculateStrike(frameSum, this.frames.slice((index + 1), index + 3));
             return sum + strikeSum;
           case ScoreEnum.Spare:
-            return this.calculateSpare(frameSum, this.frames[index + 1]);
+            return sum + this.calculateSpare(frameSum, this.frames[index + 1]);
           case ScoreEnum.Normal:
             return frameSum + sum;
           default:

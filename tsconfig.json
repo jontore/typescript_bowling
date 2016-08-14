@@ -15,7 +15,10 @@
   "files": [
     "src/frame.ts",
     "src/game.ts",
+    "src/gameCreator.ts",
+    "src/gamerender.ts",
     "src/player.ts",
+    "src/randomNumberButton.ts",
     "src/scoreEnum.ts"
   ]
 }
