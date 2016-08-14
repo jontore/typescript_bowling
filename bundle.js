@@ -55,7 +55,39 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var frame_1 = __webpack_require__(1);
+	var game_1 = __webpack_require__(1);
+	var gameRender_1 = __webpack_require__(3);
+	var randomNumberButton_1 = __webpack_require__(4);
+	var game = new game_1["default"]();
+	function render(el) {
+	    var gameEl = document.createElement('div');
+	    gameEl.innerHTML = gameRender_1["default"](game);
+	    var randomButtonEl = randomNumberButton_1["default"](function () {
+	        var currentFrame = game.getCurrentFrame();
+	        var _a = currentFrame.calculateScore(), type = _a[0], frameScore = _a[1];
+	        var randomRoll = Math.ceil(Math.random() * (10 - frameScore));
+	        currentFrame.addRoll(randomRoll);
+	        gameEl.innerHTML = gameRender_1["default"](game);
+	        if (!game.isComplete() && currentFrame.isComplete()) {
+	            game.nextFrame();
+	        }
+	        if (game.isComplete()) {
+	            el.removeChild(randomButtonEl);
+	        }
+	    });
+	    el.appendChild(gameEl);
+	    el.appendChild(randomButtonEl);
+	}
+	exports.__esModule = true;
+	exports["default"] = render;
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var frame_1 = __webpack_require__(2);
 	var Game = (function () {
 	    function Game() {
 	        this.frames = [];
@@ -103,7 +135,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    var strikeSum = _this.calculateStrike(frameSum, _this.frames.slice((index + 1), index + 3));
 	                    return sum + strikeSum;
 	                case 0:
-	                    return _this.calculateSpare(frameSum, _this.frames[index + 1]);
+	                    return sum + _this.calculateSpare(frameSum, _this.frames[index + 1]);
 	                case 2:
 	                    return frameSum + sum;
 	                default:
@@ -120,7 +152,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -170,6 +202,66 @@ return /******/ (function(modules) { // webpackBootstrap
 	}());
 	exports.__esModule = true;
 	exports["default"] = Frame;
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function renderLastFrame(type, frameSum, frame) {
+	    switch (type) {
+	        case 1:
+	        case 0:
+	            return frame.rolls.reduce(function (domStr, roll) {
+	                return domStr + ("<td>" + (roll === 10 ? 'X' : roll) + "</td>");
+	            }, '');
+	        default:
+	            return renderNormalFrame(type, frameSum, frame);
+	    }
+	}
+	function renderNormalFrame(type, frameSum, frame) {
+	    switch (type) {
+	        case 0:
+	            return "<td>" + frame.getFirstRoll() + " /</td>";
+	        case 1:
+	            return '<td>X</td>';
+	        default:
+	            return frame.rolls.reduce(function (domStr, roll) {
+	                return domStr + ("<td>" + roll + "</td>");
+	            }, '');
+	    }
+	}
+	function renderFrame(frame) {
+	    var frameSum;
+	    var type;
+	    _a = frame.calculateScore(), type = _a[0], frameSum = _a[1];
+	    return !frame.last ? renderNormalFrame(type, frameSum, frame) : renderLastFrame(type, frameSum, frame);
+	    var _a;
+	}
+	function gameRender(game) {
+	    var framesRenderd = game.frames.reduce(function (domStr, frame, index) {
+	        return domStr + ("<tr><th>" + index + ":</th> " + renderFrame(frame) + "</tr>");
+	    }, '');
+	    return "<table>" + framesRenderd + "</table> Score: " + game.calculateScore();
+	}
+	exports.__esModule = true;
+	exports["default"] = gameRender;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function createRandomButton(onRandom) {
+	    var button = document.createElement('button');
+	    button.innerText = 'Random roll';
+	    button.addEventListener('click', function () { onRandom(); });
+	    return button;
+	}
+	exports.__esModule = true;
+	exports["default"] = createRandomButton;
 
 
 /***/ }
