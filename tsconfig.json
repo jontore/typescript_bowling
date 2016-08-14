@@ -15,7 +15,6 @@
   "files": [
     "src/frame.ts",
     "src/game.ts",
-    "src/greeter.ts",
     "src/player.ts",
     "src/scoreEnum.ts"
   ]
